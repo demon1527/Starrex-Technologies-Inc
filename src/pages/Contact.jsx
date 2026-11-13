@@ -64,8 +64,8 @@ function Contact() {
           </h2>
 
           <p>
-            Whether you need a website, custom software,
-            or a digital solution, we'd love to hear about it.
+            Whether you need a website or custom software,
+            we'd love to hear about your project.
           </p>
 
           <div className="contact-note">
@@ -122,7 +122,7 @@ function Contact() {
               <option value="" disabled>Select a service</option>
               <option>Website Development</option>
               <option>E-Commerce Website</option>
-              <option>Custom Software</option>
+              <option>Software Development</option>
               <option>Business Automation</option>
               <option>Other</option>
             </select>
@@ -180,16 +180,16 @@ function Contact() {
           </button>
 
           {status === "success" && (
-  <div className="form-success">
-    <div className="success-icon">✓</div>
-    <div>
-      <h3>Inquiry Submitted!</h3>
-      <p>
-        Thank you for reaching out. We'll be in touch with you soon.
-      </p>
-    </div>
-  </div>
-)}
+            <div className="form-success">
+              <div className="success-icon">✓</div>
+              <div>
+                <h3>Inquiry Submitted!</h3>
+                <p>
+                  Thank you for reaching out. We'll be in touch with you soon.
+                </p>
+              </div>
+            </div>
+          )}
 
           {status === "error" && (
             <p className="form-error">
