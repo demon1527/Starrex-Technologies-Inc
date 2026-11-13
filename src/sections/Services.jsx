@@ -14,20 +14,11 @@ const services = [
   {
     number: "02",
     icon: "✳",
-    title: "Custom Software",
+    title: "Software Development",
     description:
       "Purpose-built software solutions that simplify workflows and solve real-world business challenges.",
     tags: ["Automation", "Software", "Solutions"],
     link: "/contact",
-  },
-  {
-    number: "03",
-    icon: "◈",
-    title: "Digital Products",
-    description:
-      "Ready-to-use digital resources, tools, and templates designed to make work smarter and easier.",
-    tags: ["Templates", "Digital Tools", "Resources"],
-    link: "/products",
   },
 ];
 
