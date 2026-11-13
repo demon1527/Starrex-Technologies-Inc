@@ -21,8 +21,8 @@ function Hero() {
         </h1>
 
         <p className="hero-description">
-          We design and develop web applications, custom software, digital
-          products, and intelligent solutions that move businesses forward.
+          We design and develop modern web applications, custom software,
+          and intelligent solutions that move businesses forward.
         </p>
 
         <div className="hero-buttons">
