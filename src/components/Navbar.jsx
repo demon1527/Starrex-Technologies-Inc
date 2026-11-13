@@ -6,7 +6,6 @@ const navigation = [
   { label: "Home", to: "/", end: true },
   { label: "Projects", to: "/projects" },
   { label: "Services", to: "/services" },
-  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact", contact: true },
 ];

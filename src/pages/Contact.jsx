@@ -124,7 +124,6 @@ function Contact() {
               <option>E-Commerce Website</option>
               <option>Custom Software</option>
               <option>Business Automation</option>
-              <option>Digital Products</option>
               <option>Other</option>
             </select>
           </div>

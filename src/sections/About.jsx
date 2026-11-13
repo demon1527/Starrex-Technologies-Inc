@@ -19,7 +19,7 @@ function About() {
             experiences.
           </p>
           <p>
-            From modern websites to custom software and digital products, we
+            From modern websites to software developments, we
             believe every solution should be built with purpose and precision.
           </p>
           <Link to="/services" className="about-link">
