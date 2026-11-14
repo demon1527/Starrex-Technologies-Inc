@@ -1,6 +1,6 @@
 /* =========================================================
    STARREX – Planet background (Three.js)
-   Earth (home) + Saturn (projects), both fully procedural.
+   Earth (home) + Saturn (projects) + Mars (services).
    No texture downloads needed.
  
    Self-contained classic script (no import statements), so it
@@ -10,6 +10,7 @@
    Page switching API (called from React):
      window.StarrexPlanets.show("earth")   // Earth settles into the Home composition
      window.StarrexPlanets.show("saturn")  // Saturn sweeps into the Projects composition
+     window.StarrexPlanets.show("mars")    // Mars arrives for the Services composition
  
    Stability:
    - WebGL availability protection
@@ -171,10 +172,12 @@
   // One group per planet; the page decides which one is present.
   const group = new THREE.Group();        // Saturn
   const earthGroup = new THREE.Group();   // Earth
-  scene.add(group, earthGroup);
+  const marsGroup = new THREE.Group();    // Mars
+  scene.add(group, earthGroup, marsGroup);
  
   const PLANET_R = 2.0;
   const EARTH_R = 2.3;
+  const MARS_R = 2.0;
   const FLATTEN = 0.93;
   const SUN = new THREE.Vector3(-0.9, 0.3, 0.5).normalize();
  
@@ -769,7 +772,140 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
   clouds.renderOrder = 1;
   earthTilt.add(clouds);
  
-  
+
+  /* =========================================================
+     MARS (fully procedural, no texture downloads)
+     Rust-orange desert, dark basalt regions, a canyon scar,
+     white polar caps and a thin dusty rim. Surface detail comes
+     from 3D noise sampled on the sphere, so it spins with no seam.
+  ========================================================= */
+  const marsVertex = `
+    varying vec3 vNormal;
+    varying vec3 vView;
+    varying vec3 vObj;
+
+    void main() {
+      vObj = position;
+      vNormal = normalize(normalMatrix * normal);
+
+      vec4 mv = modelViewMatrix * vec4(position, 1.0);
+      vView = normalize(-mv.xyz);
+
+      gl_Position = projectionMatrix * mv;
+    }
+  `;
+
+  const marsMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uRot: { value: 0 },
+      uSun: { value: SUN },
+      uBright: { value: 0.95 },
+    },
+
+    vertexShader: marsVertex,
+
+    fragmentShader: `
+      uniform float uRot;
+      uniform vec3 uSun;
+      uniform float uBright;
+
+      varying vec3 vNormal;
+      varying vec3 vView;
+      varying vec3 vObj;
+
+      float hash(vec3 p) {
+        p = fract(p * 0.3183099 + 0.1);
+        p *= 17.0;
+        return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+      }
+
+      float noise(vec3 x) {
+        vec3 i = floor(x);
+        vec3 f = fract(x);
+        f = f * f * (3.0 - 2.0 * f);
+
+        return mix(
+          mix(
+            mix(hash(i + vec3(0.0, 0.0, 0.0)), hash(i + vec3(1.0, 0.0, 0.0)), f.x),
+            mix(hash(i + vec3(0.0, 1.0, 0.0)), hash(i + vec3(1.0, 1.0, 0.0)), f.x),
+            f.y),
+          mix(
+            mix(hash(i + vec3(0.0, 0.0, 1.0)), hash(i + vec3(1.0, 0.0, 1.0)), f.x),
+            mix(hash(i + vec3(0.0, 1.0, 1.0)), hash(i + vec3(1.0, 1.0, 1.0)), f.x),
+            f.y),
+          f.z);
+      }
+
+      float fbm(vec3 p) {
+        float a = 0.5;
+        float sum = 0.0;
+
+        for (int i = 0; i < 6; i++) {
+          sum += a * noise(p);
+          p = p * 2.03 + vec3(1.7, 9.2, 3.1);
+          a *= 0.5;
+        }
+
+        return sum;
+      }
+
+      void main() {
+        vec3 n = normalize(vNormal);
+        vec3 v = normalize(vView);
+        vec3 l = normalize(uSun);
+
+        // Spin around the vertical axis (same direction as Earth).
+        float ang = uRot * 6.2831853;
+        float cs = cos(ang);
+        float sn = sin(ang);
+        vec3 o = normalize(vObj);
+        vec3 p = vec3(o.x * cs + o.z * sn, o.y, -o.x * sn + o.z * cs);
+
+        // Surface colour: rusty plains with lighter sand and dark basalt.
+        float warp = fbm(p * 2.0 + 3.0);
+        float big = fbm(p * 1.6 + warp * 0.9);
+        float detail = fbm(p * 9.0);
+        float fine = fbm(p * 28.0);
+
+        vec3 rust = vec3(0.70, 0.30, 0.14);
+        vec3 sand = vec3(0.86, 0.58, 0.36);
+        vec3 basalt = vec3(0.30, 0.15, 0.10);
+
+        vec3 col = mix(rust, sand, smoothstep(0.35, 0.70, fbm(p * 3.0 + 7.0)));
+        col = mix(col, basalt, smoothstep(0.50, 0.62, big) * 0.75);
+        col *= 0.82 + 0.36 * detail;
+        col *= 0.92 + 0.16 * fine;
+
+        // A long canyon scar near the equator.
+        float ridge = 1.0 - abs(2.0 * fbm(p * 4.0 + 11.0) - 1.0);
+        float canyon = smoothstep(0.93, 0.99, ridge) * (1.0 - smoothstep(0.30, 0.50, abs(o.y)));
+        col *= 1.0 - canyon * 0.45;
+
+        // Polar caps with a ragged edge.
+        float edge = 0.88 + (fbm(p * 5.0) - 0.5) * 0.08;
+        float cap = smoothstep(edge, edge + 0.03, abs(o.y));
+        col = mix(col, vec3(0.93, 0.92, 0.90), cap * 0.9);
+
+        // Lighting: sunlit side, soft terminator, faint ambient.
+        float d = dot(n, l);
+        float lit = smoothstep(-0.12, 0.30, d);
+        vec3 outCol = col * (max(d, 0.0) * 1.25 + 0.03);
+
+        // Thin dusty atmosphere along the edge.
+        float fres = pow(1.0 - max(dot(n, v), 0.0), 3.0);
+        outCol += vec3(0.95, 0.55, 0.32) * fres * (0.05 + 0.35 * lit);
+
+        gl_FragColor = vec4(outCol * uBright, 1.0);
+      }
+    `,
+  });
+
+  const marsTilt = new THREE.Group();
+  marsGroup.add(marsTilt);
+
+  const mars = new THREE.Mesh(new THREE.SphereGeometry(MARS_R, 96, 96), marsMat);
+  marsTilt.add(mars);
+
   /* ---------- STARS ---------- */
   function makeStars(count, size, spread) {
     const pos = [];
@@ -823,6 +959,7 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
     const s = portrait ? 0.55 : 1;
     group.scale.setScalar(s);
     earthGroup.scale.setScalar(s);
+    marsGroup.scale.setScalar(s);
  
     // Keep the planet visible through most of the page and move it fully
     // beyond the top edge only as the visitor approaches the page bottom.
@@ -830,10 +967,11 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
   }
  
   /* =========================================================
-     PLANET SWITCHING (Earth <-> Saturn)
+     PLANET SWITCHING (Earth / Saturn / Mars)
      presence: 1 = in place, 0 = gone
      - Earth recedes smoothly into the distance when leaving Home.
      - Saturn sweeps into the Projects composition from the left.
+     - Mars arrives from the distance exactly like Earth does.
      - The reverse transition uses the same coordinated timing.
   ========================================================= */
   const easeInOutCubic = (k) =>
@@ -862,6 +1000,17 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
       leave: { delay: 0, duration: 1.5, ease: easeInCubic },
       place(p) {
         earthGroup.position.set(cur.x, cur.y, -(1 - p) * 38);
+      },
+    },
+
+    mars: {
+      group: marsGroup,
+      presence: 0,
+      tween: null,
+      enter: { delay: 0.12, duration: 2.15, ease: easeOutCubic },
+      leave: { delay: 0, duration: 1.5, ease: easeInCubic },
+      place(p) {
+        marsGroup.position.set(cur.x, cur.y, -(1 - p) * 38);
       },
     },
   };
@@ -976,6 +1125,9 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
     if (planets.earth.presence > 0.001) {
       earthMat.uniforms.uRot.value += speed * 0.2;
 cloudMat.uniforms.uRot.value += speed * 0.2 * 1.35;
+    }
+    if (planets.mars.presence > 0.001) {
+      marsMat.uniforms.uRot.value = (marsMat.uniforms.uRot.value + speed * 0.2) % 1;
     }
  
     // Fade Earth in once its textures have arrived.
