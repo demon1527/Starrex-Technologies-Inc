@@ -1,10 +1,76 @@
+/* Colour of the space behind the stars. Each page sets html[data-space]
+   (see PlanetController) and the colours fade smoothly between pages.
+   Only this background changes; the stars themselves are untouched. */
+@property --space-a {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: rgba(91, 33, 182, 0.22);
+}
+
+@property --space-b {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: rgba(49, 30, 94, 0.2);
+}
+
+@property --space-base {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #05060f;
+}
+
 html {
   min-width: 320px;
   min-height: 100%;
+
+  /* Purple: About, Contact and the default. */
+  --space-a: rgba(91, 33, 182, 0.22);
+  --space-b: rgba(49, 30, 94, 0.2);
+  --space-base: #05060f;
+
   background:
-    radial-gradient(ellipse at 72% 18%, rgba(91, 33, 182, 0.22), transparent 42%),
-    radial-gradient(ellipse at 12% 72%, rgba(49, 30, 94, 0.2), transparent 38%),
-    #05060f;
+    radial-gradient(ellipse at 72% 18%, var(--space-a), transparent 42%),
+    radial-gradient(ellipse at 12% 72%, var(--space-b), transparent 38%),
+    var(--space-base);
+
+  transition:
+    --space-a 1.8s ease,
+    --space-b 1.8s ease,
+    --space-base 1.8s ease;
+}
+
+/* Earth: ocean blue. */
+html[data-space="earth"] {
+  --space-a: rgba(37, 99, 235, 0.24);
+  --space-b: rgba(14, 60, 140, 0.2);
+  --space-base: #040812;
+}
+
+/* Saturn: golden amber. */
+html[data-space="saturn"] {
+  --space-a: rgba(217, 150, 40, 0.2);
+  --space-b: rgba(120, 70, 20, 0.18);
+  --space-base: #0a0704;
+}
+
+/* Mars: dusty orange-red. */
+html[data-space="mars"] {
+  --space-a: rgba(210, 80, 40, 0.22);
+  --space-b: rgba(130, 40, 25, 0.18);
+  --space-base: #0b0505;
+}
+
+/* Moon: cool silver-grey. */
+html[data-space="moon"] {
+  --space-a: rgba(160, 170, 190, 0.16);
+  --space-b: rgba(90, 100, 120, 0.14);
+  --space-base: #060709;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: none;
+  }
 }
 
 body {
