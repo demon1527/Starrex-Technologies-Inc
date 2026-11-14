@@ -32,7 +32,6 @@
   right: 7%;
   top: 8%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.2), transparent 68%);
   pointer-events: none;
 }
 
@@ -164,7 +163,6 @@
   font-weight: 700;
   letter-spacing: -8px;
   padding-right: 8px;
-  background: radial-gradient(circle at 35% 28%, rgba(167, 139, 250, 0.8), rgba(91, 33, 182, 0.65) 40%, rgba(8, 6, 16, 0.95) 76%);
   border: 1px solid rgba(196, 181, 253, 0.4);
   box-shadow: 0 0 75px rgba(139, 92, 246, 0.3), inset -15px -18px 35px rgba(0, 0, 0, 0.45);
 }
@@ -196,7 +194,6 @@
 .services-offerings {
   padding-top: 110px;
   padding-bottom: 120px;
-  background: rgba(8, 6, 16, 0.38);
 }
 
 .services-section-heading {

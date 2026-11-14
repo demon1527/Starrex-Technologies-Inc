@@ -45,7 +45,7 @@ function Projects() {
           <span>Reality.</span>
         </h1>
         <p>
-          A collection of digital experiences, creative solutions, and
+          A collection of digital experiences, creative solutions and
           technology-driven projects built by Starrex Technologies.
         </p>
       </div>
