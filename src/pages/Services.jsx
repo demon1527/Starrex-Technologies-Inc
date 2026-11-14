@@ -33,8 +33,8 @@ const services = [
     ],
     outcome: "Practical technology that saves time and solves real problems.",
     tags: ["Custom Software", "Automation", "Integrations", "Applications"],
-    link: "/contact",
-    linkText: "Discuss your project",
+    link: "/software-development",
+    linkText: "Explore software development",
   },
 ];
 
