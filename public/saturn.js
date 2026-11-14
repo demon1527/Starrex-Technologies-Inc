@@ -1115,6 +1115,25 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
         return sum;
       }
 
+      // Round, soft stars. More of them appear where the galaxy is dense.
+      vec3 starLayer(vec2 q, float scale, float dens, float seed) {
+        vec2 g = q * scale;
+        vec2 id = floor(g);
+        vec2 f = fract(g);
+
+        float h = hash(id + seed);
+        float thr = 1.0 - (0.008 + 0.06 * clamp(dens, 0.0, 1.0));
+        if (h < thr) return vec3(0.0);
+
+        vec2 jit = vec2(hash(id + seed + 3.7), hash(id + seed + 8.1));
+        float d = length(f - (0.25 + 0.5 * jit));
+
+        float b = smoothstep(0.34, 0.0, d) * (0.35 + 0.65 * fract(h * 97.0));
+        vec3 tint = mix(vec3(0.74, 0.82, 1.0), vec3(1.0, 0.90, 0.70), fract(h * 53.0));
+
+        return tint * b;
+      }
+
       void main() {
         // Centre of the page is the centre of the galaxy. In landscape the
         // galaxy spans the full width; in portrait it spans the full height.
@@ -1128,52 +1147,54 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
         float cs = cos(angle);
         float sn = sin(angle);
 
-        // Coordinates that turn with the galaxy (used for noise and star specks).
+        // Coordinates that turn with the galaxy (used for noise and stars).
         vec2 q = vec2(pt.x * cs + pt.y * sn, -pt.x * sn + pt.y * cs);
 
         float r = length(pt);
         float theta = atan(pt.y, pt.x) - angle;
 
-        // Clumpy, uneven arms.
+        // Uneven, clumpy arms with a grainy, mottled texture.
         float warp = (fbm(q * 3.0 + 4.0) - 0.5) * 0.9;
         float armPhase = 2.0 * (theta + warp) - 4.6 * log(r + 0.02);
 
         float arms = pow(0.5 + 0.5 * cos(armPhase), 1.6 + 1.6 * r);
         float minorArms = pow(0.5 + 0.5 * cos(armPhase * 2.0 + 1.3), 2.0) * 0.35;
+        float grain = 0.62 + 0.76 * fbm(q * 16.0 + 2.0);
 
         float disc = exp(-r * 1.55);
-        float density = disc * (0.18 + 0.95 * arms + minorArms);
+        float density = disc * (0.16 + 0.95 * arms + minorArms) * grain;
 
-        // Dust lanes hug the inner edge of each arm.
+        // Dark dust lanes along the inner edge of every arm.
         float lane = pow(0.5 + 0.5 * cos(armPhase + 0.95), 3.0);
         float dust = lane * smoothstep(0.06, 0.38, r) * (0.45 + 0.55 * fbm(q * 6.0 + 9.0));
-        density *= 1.0 - 0.55 * dust;
+        density *= 1.0 - 0.62 * dust;
 
-        // Bright glowing core with a soft bar.
-        float core = exp(-r * r * 26.0) * 0.8 + exp(-r * 6.0) * 0.16;
+        // Warm golden bulge of old stars at the centre.
+        float bulge = exp(-r * r * 30.0) * 0.8 + exp(-r * 6.5) * 0.15;
 
-        // Colour: warm core, pink inner arms, purple middle, soft blue outer edge.
-        vec3 coreCol = vec3(1.00, 0.86, 0.80);
-        vec3 pink = vec3(0.92, 0.42, 0.78);
-        vec3 purple = vec3(0.52, 0.30, 0.98);
-        vec3 blue = vec3(0.34, 0.55, 1.00);
+        // Colours: golden core, pale blue-white inner arms, violet, deep blue edge.
+        vec3 gold = vec3(1.00, 0.80, 0.52);
+        vec3 paleBlue = vec3(0.66, 0.74, 1.00);
+        vec3 violet = vec3(0.42, 0.30, 0.95);
+        vec3 deepBlue = vec3(0.24, 0.24, 0.78);
 
-        vec3 armCol = mix(pink, purple, smoothstep(0.08, 0.40, r));
-        armCol = mix(armCol, blue, smoothstep(0.40, 0.95, r));
+        vec3 armCol = mix(paleBlue, violet, smoothstep(0.10, 0.42, r));
+        armCol = mix(armCol, deepBlue, smoothstep(0.42, 0.95, r));
+        armCol = mix(gold, armCol, smoothstep(0.02, 0.24, r));
 
-        vec3 col = armCol * density * 0.82 + coreCol * core * 0.5;
+        vec3 col = armCol * density * 0.55 + gold * bulge * 0.34;
 
-        // Fine star specks that turn with the galaxy.
-        vec2 cell = floor(q * 240.0);
-        float sp = step(0.9982, hash(cell));
-        col += vec3(1.0, 0.95, 1.0) * sp * (0.12 + 0.9 * density);
+        // Fine stars of two sizes that turn with the galaxy.
+        vec3 stars = starLayer(q, 110.0, density * 2.0, 0.0)
+                   + 0.7 * starLayer(q, 220.0, density * 2.0, 17.0);
+        col += stars * (0.35 + 0.9 * clamp(density, 0.0, 1.0));
 
         // Fade the outer edge of the disc so it blends into space.
         col *= 1.0 - smoothstep(1.05, 1.6, r);
 
         col = clamp(col * uAlpha, 0.0, 1.0);
 
-        // Premultiplied light: alpha follows brightness so the purple page
+        // Premultiplied light: alpha follows brightness so the page
         // background stays visible wherever the galaxy is dark.
         gl_FragColor = vec4(col, max(col.r, max(col.g, col.b)));
       }
