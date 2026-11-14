@@ -24,7 +24,6 @@ function Hero() {
           We design and develop modern web applications, custom software,
           and intelligent solutions that move businesses forward.
         </p>
-
         <div className="hero-buttons">
           <Link to="/services" className="hero-primary">
             Explore Our Services <span aria-hidden="true">↗</span>
