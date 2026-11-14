@@ -1,19 +1,15 @@
 .contact-page {
-  min-height: 100vh;
-  padding: 170px 8% 100px;
-  background: transparent;
-}
+    position: relative;
+  padding: 200px 8%;
+
+  background: rgba(11, 8, 19, 0.7);  /* was #0b0813 */
+  overflow: hidden;
+  }
 
 /* HERO */
 
 .contact-hero {
-  padding: 45px;
-  background: rgba(15, 10, 27, 0.78);
-  border: 1px solid rgba(167, 139, 250, 0.2);
-  border-radius: 18px;
-
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(20px);
+background: transparent;
 }
 
 .contact-hero h1 {
@@ -357,4 +353,28 @@
 .contact-submit:disabled {
   opacity: 0.65;
   cursor: not-allowed;
+}
+/* HOMEPAGE-ALIGNED HERO */
+.contact-page { padding: 0 8% 100px; }
+.contact-hero {
+  min-height: 100vh; max-width: 1100px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: flex-start;
+  justify-content: center; text-align: left; padding-top: 90px;
+}
+.contact-hero h1 {
+  margin: -20px 0 0; font-size: clamp(48px, 7.5vw, 92px);
+  font-weight: 800; line-height: 1.12;
+  letter-spacing: clamp(-5px, -0.35vw, -2px);
+}
+.contact-hero p {
+  max-width: 620px; margin: 28px 0 0; font-size: 16px; line-height: 1.9;
+}
+@media (max-width: 600px) {
+  .contact-page { padding: 0 6% 75px; }
+  .contact-hero { min-height: 88vh; margin-bottom: 60px; padding-top: 90px; }
+  .contact-hero h1 {
+    font-size: clamp(40px, 11vw, 52px);
+    letter-spacing: -2px; line-height: 1.14;
+  }
+  .contact-hero p { font-size: 14px; line-height: 1.8; }
 }

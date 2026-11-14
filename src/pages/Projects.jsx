@@ -38,7 +38,7 @@ function Projects() {
   return (
     <main className="projects-page">
       <div className="projects-hero">
-        <span className="section-label">OUR WORK</span>
+        <div className="hero-badge"><span className="status-dot" />OUR WORK</div>
         <h1>
           Ideas Into
           <br />

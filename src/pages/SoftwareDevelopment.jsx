@@ -37,15 +37,16 @@ function SoftwareDevelopment() {
     <main className="software-page">
       <section className="software-hero">
         <div className="software-hero-content">
-          <span className="section-label">SOFTWARE DEVELOPMENT</span>
+          <div className="hero-badge"><span className="status-dot" />SOFTWARE DEVELOPMENT</div>
           <h1>
             Software built
+            <span> around</span>
             <br />
-            <span>around your world.</span>
+            <span>your world.</span>
           </h1>
           <p>
             The right software should make complicated work feel simpler.
-            We create practical digital tools, applications, and connected
+            We create practical digital tools, applications and connected
             systems shaped around the way you work.
           </p>
           <div className="software-hero-actions">
