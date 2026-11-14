@@ -1,6 +1,7 @@
 /* =========================================================
    STARREX – Planet background (Three.js)
-   Earth (home) + Saturn (projects) + Mars (services).
+   Earth (home) + Saturn (projects) + Mars (services) + Moon (software)
+   + a Milky Way galaxy (contact). About shows no planet.
    No texture downloads needed.
  
    Self-contained classic script (no import statements), so it
@@ -8,9 +9,12 @@
    Requires the global THREE (r128 UMD build) and <canvas id="planet">.
  
    Page switching API (called from React):
-     window.StarrexPlanets.show("earth")   // Earth settles into the Home composition
-     window.StarrexPlanets.show("saturn")  // Saturn sweeps into the Projects composition
-     window.StarrexPlanets.show("mars")    // Mars arrives for the Services composition
+     window.StarrexPlanets.show("earth")   // Home
+     window.StarrexPlanets.show("saturn")  // Projects
+     window.StarrexPlanets.show("mars")    // Services
+     window.StarrexPlanets.show("moon")    // Software Development
+     window.StarrexPlanets.show("none")    // About: the planet leaves, nothing arrives
+     window.StarrexPlanets.show("galaxy")  // Contact: the planet leaves, the galaxy fades in
  
    Stability:
    - WebGL availability protection
@@ -173,11 +177,13 @@
   const group = new THREE.Group();        // Saturn
   const earthGroup = new THREE.Group();   // Earth
   const marsGroup = new THREE.Group();    // Mars
-  scene.add(group, earthGroup, marsGroup);
+  const moonGroup = new THREE.Group();    // Moon
+  scene.add(group, earthGroup, marsGroup, moonGroup);
  
   const PLANET_R = 2.0;
   const EARTH_R = 2.3;
   const MARS_R = 2.0;
+  const MOON_R = 1.7;
   const FLATTEN = 0.93;
   const SUN = new THREE.Vector3(-0.9, 0.3, 0.5).normalize();
  
@@ -906,6 +912,292 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
   const mars = new THREE.Mesh(new THREE.SphereGeometry(MARS_R, 96, 96), marsMat);
   marsTilt.add(mars);
 
+  /* =========================================================
+     MOON (fully procedural)
+     Grey highlands, dark maria and layered craters with bright rims.
+     No atmosphere, so the terminator is crisp.
+  ========================================================= */
+  const moonMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uRot: { value: 0 },
+      uSun: { value: SUN },
+      uBright: { value: 0.98 },
+    },
+
+    vertexShader: marsVertex,
+
+    fragmentShader: `
+      uniform float uRot;
+      uniform vec3 uSun;
+      uniform float uBright;
+
+      varying vec3 vNormal;
+      varying vec3 vView;
+      varying vec3 vObj;
+
+      float hash(vec3 p) {
+        p = fract(p * 0.3183099 + 0.1);
+        p *= 17.0;
+        return fract(p.x * p.y * p.z * (p.x + p.y + p.z));
+      }
+
+      float noise(vec3 x) {
+        vec3 i = floor(x);
+        vec3 f = fract(x);
+        f = f * f * (3.0 - 2.0 * f);
+
+        return mix(
+          mix(
+            mix(hash(i + vec3(0.0, 0.0, 0.0)), hash(i + vec3(1.0, 0.0, 0.0)), f.x),
+            mix(hash(i + vec3(0.0, 1.0, 0.0)), hash(i + vec3(1.0, 1.0, 0.0)), f.x),
+            f.y),
+          mix(
+            mix(hash(i + vec3(0.0, 0.0, 1.0)), hash(i + vec3(1.0, 0.0, 1.0)), f.x),
+            mix(hash(i + vec3(0.0, 1.0, 1.0)), hash(i + vec3(1.0, 1.0, 1.0)), f.x),
+            f.y),
+          f.z);
+      }
+
+      float fbm(vec3 p) {
+        float a = 0.5;
+        float sum = 0.0;
+
+        for (int i = 0; i < 5; i++) {
+          sum += a * noise(p);
+          p = p * 2.03 + vec3(1.7, 9.2, 3.1);
+          a *= 0.5;
+        }
+
+        return sum;
+      }
+
+      vec3 hash3(vec3 p) {
+        p = vec3(
+          dot(p, vec3(127.1, 311.7, 74.7)),
+          dot(p, vec3(269.5, 183.3, 246.1)),
+          dot(p, vec3(113.5, 271.9, 124.6))
+        );
+        return fract(sin(p) * 43758.5453);
+      }
+
+      // x = crater bowl (0..1), y = crater rim (0..1)
+      vec2 craters(vec3 x, float scale) {
+        vec3 p = x * scale;
+        vec3 ip = floor(p);
+        vec3 fp = fract(p);
+
+        float bowl = 0.0;
+        float rim = 0.0;
+
+        for (int k = -1; k <= 1; k++) {
+          for (int j = -1; j <= 1; j++) {
+            for (int i = -1; i <= 1; i++) {
+              vec3 g = vec3(float(i), float(j), float(k));
+              vec3 h = hash3(ip + g);
+
+              if (h.x > 0.45) {
+                vec3 c = g + h.yzx * 0.7 + 0.15;
+                float rad = 0.14 + 0.26 * fract(h.x * 7.13 + h.z * 3.1);
+                float d = length(fp - c) / rad;
+
+                bowl = max(bowl, max(1.0 - d * d, 0.0));
+                rim = max(rim, exp(-pow((d - 1.05) * 5.0, 2.0)));
+              }
+            }
+          }
+        }
+
+        return vec2(bowl, rim);
+      }
+
+      void main() {
+        vec3 n = normalize(vNormal);
+        vec3 l = normalize(uSun);
+
+        // Spin around the vertical axis (same direction as Earth and Mars).
+        float ang = uRot * 6.2831853;
+        float cs = cos(ang);
+        float sn = sin(ang);
+        vec3 o = normalize(vObj);
+        vec3 p = vec3(o.x * cs + o.z * sn, o.y, -o.x * sn + o.z * cs);
+
+        // Highlands and dark maria.
+        vec3 highland = vec3(0.67, 0.66, 0.64);
+        vec3 maria = vec3(0.29, 0.30, 0.33);
+
+        float mare = smoothstep(0.48, 0.60, fbm(p * 1.7 + 2.0));
+        vec3 col = mix(highland, maria, mare * 0.85);
+        col *= 0.80 + 0.40 * fbm(p * 8.0);
+
+        // Three layers of craters: large, medium, small.
+        vec2 c1 = craters(p, 4.0);
+        vec2 c2 = craters(p + 7.0, 9.0);
+        vec2 c3 = craters(p + 3.0, 20.0);
+
+        float bowl = max(c1.x * 0.9, max(c2.x * 0.7, c3.x * 0.5));
+        float rim = max(c1.y, max(c2.y * 0.8, c3.y * 0.6));
+
+        col *= 1.0 - bowl * 0.28;
+        col *= 1.0 + rim * 0.30;
+
+        // Rocky surface: crisp terminator and a faint ambient.
+        float d = dot(n, l);
+        vec3 outCol = col * (max(d, 0.0) * 1.2 + 0.025);
+
+        gl_FragColor = vec4(outCol * uBright, 1.0);
+      }
+    `,
+  });
+
+  const moonTilt = new THREE.Group();
+  moonGroup.add(moonTilt);
+
+  const moon = new THREE.Mesh(new THREE.SphereGeometry(MOON_R, 96, 96), moonMat);
+  moonTilt.add(moon);
+
+  /* =========================================================
+     MILKY WAY GALAXY (Contact page)
+     A full-screen spiral galaxy drawn in a shader. It sits behind
+     everything, its centre is the centre of the page, and it turns
+     slowly around that centre. It fades in and out (it never flies).
+  ========================================================= */
+  const galaxyMat = new THREE.ShaderMaterial({
+    uniforms: {
+      uRot: { value: 0 },
+      uAlpha: { value: 0 },
+      uAspect: { value: 1.6 },
+    },
+
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        // Full-screen quad pushed to the far plane so planets and stars draw over it.
+        gl_Position = vec4(position.xy, 0.9999, 1.0);
+      }
+    `,
+
+    fragmentShader: `
+      uniform float uRot;
+      uniform float uAlpha;
+      uniform float uAspect;
+
+      varying vec2 vUv;
+
+      float hash(vec2 p) {
+        p = fract(p * vec2(123.34, 456.21));
+        p += dot(p, p + 45.32);
+        return fract(p.x * p.y);
+      }
+
+      float noise(vec2 x) {
+        vec2 i = floor(x);
+        vec2 f = fract(x);
+        f = f * f * (3.0 - 2.0 * f);
+
+        return mix(
+          mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+          mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
+          f.y);
+      }
+
+      float fbm(vec2 p) {
+        float a = 0.5;
+        float sum = 0.0;
+
+        for (int i = 0; i < 5; i++) {
+          sum += a * noise(p);
+          p = p * 2.02 + vec2(5.2, 1.3);
+          a *= 0.5;
+        }
+
+        return sum;
+      }
+
+      void main() {
+        // Centre of the page is the centre of the galaxy. In landscape the
+        // galaxy spans the full width; in portrait it spans the full height.
+        float span = max(uAspect, 1.0);
+        vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0) * 2.0 / span;
+
+        // Tilt the disc so it reads as a galaxy seen at an angle.
+        vec2 pt = vec2(p.x, p.y / 0.62);
+
+        float angle = uRot * 6.2831853;
+        float cs = cos(angle);
+        float sn = sin(angle);
+
+        // Coordinates that turn with the galaxy (used for noise and star specks).
+        vec2 q = vec2(pt.x * cs + pt.y * sn, -pt.x * sn + pt.y * cs);
+
+        float r = length(pt);
+        float theta = atan(pt.y, pt.x) - angle;
+
+        // Clumpy, uneven arms.
+        float warp = (fbm(q * 3.0 + 4.0) - 0.5) * 0.9;
+        float armPhase = 2.0 * (theta + warp) - 4.6 * log(r + 0.02);
+
+        float arms = pow(0.5 + 0.5 * cos(armPhase), 1.6 + 1.6 * r);
+        float minorArms = pow(0.5 + 0.5 * cos(armPhase * 2.0 + 1.3), 2.0) * 0.35;
+
+        float disc = exp(-r * 1.55);
+        float density = disc * (0.18 + 0.95 * arms + minorArms);
+
+        // Dust lanes hug the inner edge of each arm.
+        float lane = pow(0.5 + 0.5 * cos(armPhase + 0.95), 3.0);
+        float dust = lane * smoothstep(0.06, 0.38, r) * (0.45 + 0.55 * fbm(q * 6.0 + 9.0));
+        density *= 1.0 - 0.55 * dust;
+
+        // Bright glowing core with a soft bar.
+        float core = exp(-r * r * 26.0) * 0.8 + exp(-r * 6.0) * 0.16;
+
+        // Colour: warm core, pink inner arms, purple middle, soft blue outer edge.
+        vec3 coreCol = vec3(1.00, 0.86, 0.80);
+        vec3 pink = vec3(0.92, 0.42, 0.78);
+        vec3 purple = vec3(0.52, 0.30, 0.98);
+        vec3 blue = vec3(0.34, 0.55, 1.00);
+
+        vec3 armCol = mix(pink, purple, smoothstep(0.08, 0.40, r));
+        armCol = mix(armCol, blue, smoothstep(0.40, 0.95, r));
+
+        vec3 col = armCol * density * 0.82 + coreCol * core * 0.5;
+
+        // Fine star specks that turn with the galaxy.
+        vec2 cell = floor(q * 240.0);
+        float sp = step(0.9982, hash(cell));
+        col += vec3(1.0, 0.95, 1.0) * sp * (0.12 + 0.9 * density);
+
+        // Fade the outer edge of the disc so it blends into space.
+        col *= 1.0 - smoothstep(1.05, 1.6, r);
+
+        col = clamp(col * uAlpha, 0.0, 1.0);
+
+        // Premultiplied light: alpha follows brightness so the purple page
+        // background stays visible wherever the galaxy is dark.
+        gl_FragColor = vec4(col, max(col.r, max(col.g, col.b)));
+      }
+    `,
+
+    transparent: true,
+    depthWrite: false,
+    depthTest: true,
+    blending: THREE.CustomBlending,
+    blendEquation: THREE.AddEquation,
+    blendSrc: THREE.OneFactor,
+    blendDst: THREE.OneFactor,
+    blendSrcAlpha: THREE.OneFactor,
+    blendDstAlpha: THREE.OneFactor,
+  });
+
+  const galaxyMesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), galaxyMat);
+  galaxyMesh.frustumCulled = false;
+  galaxyMesh.renderOrder = -1;
+  galaxyMesh.visible = false;
+  scene.add(galaxyMesh);
+
+  const galaxy = { alpha: 0, target: 0, lastTime: performance.now() };
+
   /* ---------- STARS ---------- */
   function makeStars(count, size, spread) {
     const pos = [];
@@ -960,6 +1252,7 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
     group.scale.setScalar(s);
     earthGroup.scale.setScalar(s);
     marsGroup.scale.setScalar(s);
+    moonGroup.scale.setScalar(s);
  
     // Keep the planet visible through most of the page and move it fully
     // beyond the top edge only as the visitor approaches the page bottom.
@@ -967,57 +1260,52 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
   }
  
   /* =========================================================
-     PLANET SWITCHING (Earth / Saturn / Mars)
+     PLANET SWITCHING (Earth / Saturn / Mars / Moon / none / galaxy)
      presence: 1 = in place, 0 = gone
-     - Earth recedes smoothly into the distance when leaving Home.
-     - Saturn sweeps into the Projects composition from the left.
-     - Mars arrives from the distance exactly like Earth does.
-     - The reverse transition uses the same coordinated timing.
+
+     One rule for every page change:
+     - The planet that is leaving exits to the LEFT.
+     - The planet that is arriving comes in from BEHIND (the distance).
+     - About: the planet leaves, nothing arrives.
+     - Contact: the planet leaves and the galaxy fades in. The galaxy
+       fades out again when the visitor goes anywhere else.
   ========================================================= */
   const easeInOutCubic = (k) =>
     k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
   const easeOutCubic = (k) => 1 - Math.pow(1 - k, 3);
   const easeInCubic = (k) => k * k * k;
- 
-  const planets = {
-    saturn: {
-      group,
-      presence: 0,
-      tween: null,
-      enter: { delay: 0.18, duration: 1.85, ease: easeInOutCubic },
-      leave: { delay: 0, duration: 1.3, ease: easeInOutCubic },
-      place(p) {
-        const away = (1 - p) * (base.x + viewHalfW + 7);
-        group.position.set(cur.x - away, cur.y, 0);
-      },
-    },
- 
-    earth: {
-      group: earthGroup,
-      presence: 1,
-      tween: null,
-      enter: { delay: 0.12, duration: 2.15, ease: easeOutCubic },
-      leave: { delay: 0, duration: 1.5, ease: easeInCubic },
-      place(p) {
-        earthGroup.position.set(cur.x, cur.y, -(1 - p) * 38);
-      },
-    },
 
-    mars: {
-      group: marsGroup,
-      presence: 0,
+  const ENTER_FROM_BEHIND = { delay: 0.12, duration: 2.15, ease: easeOutCubic };
+  const EXIT_LEFT = { delay: 0, duration: 1.5, ease: easeInOutCubic };
+  const RECEDE_BEHIND = { delay: 0, duration: 1.2, ease: easeInCubic };
+
+  function makePlanet(grp, presence) {
+    return {
+      group: grp,
+      presence,
       tween: null,
-      enter: { delay: 0.12, duration: 2.15, ease: easeOutCubic },
-      leave: { delay: 0, duration: 1.5, ease: easeInCubic },
+      mode: "behind", // path it is travelling on: "behind" or "left"
       place(p) {
-        marsGroup.position.set(cur.x, cur.y, -(1 - p) * 38);
+        if (this.mode === "left") {
+          const away = (1 - p) * (base.x + viewHalfW + 7);
+          grp.position.set(cur.x - away, cur.y, 0);
+        } else {
+          grp.position.set(cur.x, cur.y, -(1 - p) * 38);
+        }
       },
-    },
+    };
+  }
+
+  const planets = {
+    saturn: makePlanet(group, 0),
+    earth: makePlanet(earthGroup, 1),
+    mars: makePlanet(marsGroup, 0),
+    moon: makePlanet(moonGroup, 0),
   };
- 
-  let currentPlanet = "earth";
+
+  let currentPlanet = "earth"; // key of the planet on screen, or null
   let firstShowCall = true;
- 
+
   function startTween(planet, to, cfg) {
     planet.tween = {
       from: planet.presence,
@@ -1027,32 +1315,58 @@ earthTilt.rotation.x = THREE.MathUtils.degToRad(0);
       ease: cfg.ease,
     };
   }
- 
+
+  function startEnter(planet) {
+    // A planet that is still partly visible (changed mind mid-exit) simply
+    // reverses along the path it is on; otherwise it comes from behind.
+    if (planet.presence <= 0.001) planet.mode = "behind";
+    startTween(planet, 1, ENTER_FROM_BEHIND);
+  }
+
+  function startExit(planet) {
+    // A planet still arriving from behind recedes the same way (no jump);
+    // every other planet exits to the left.
+    if (planet.presence < 0.999 && planet.mode === "behind") {
+      startTween(planet, 0, RECEDE_BEHIND);
+      return;
+    }
+
+    planet.mode = "left";
+    startTween(planet, 0, EXIT_LEFT);
+  }
+
   function showPlanet(name) {
-    if (!planets[name]) return;
- 
+    const isPlanet = Boolean(planets[name]);
+    if (!isPlanet && name !== "none" && name !== "galaxy") return;
+
+    const nextKey = isPlanet ? name : null;
+
     // The very first call (page load) and reduced-motion users switch instantly.
     const instant = firstShowCall || reduceMotion;
     firstShowCall = false;
- 
-    if (name === currentPlanet) return;
- 
-    const prev = planets[currentPlanet];
-    const next = planets[name];
-    currentPlanet = name;
- 
+
+    galaxy.target = name === "galaxy" ? 1 : 0;
+    if (instant) galaxy.alpha = galaxy.target;
+
+    if (nextKey === currentPlanet) return;
+
+    const prev = currentPlanet ? planets[currentPlanet] : null;
+    const next = nextKey ? planets[nextKey] : null;
+    currentPlanet = nextKey;
+
     if (instant) {
-      prev.tween = null;
-      next.tween = null;
-      prev.presence = 0;
-      next.presence = 1;
+      for (const key in planets) {
+        planets[key].tween = null;
+        planets[key].mode = "behind";
+        planets[key].presence = planets[key] === next ? 1 : 0;
+      }
       return;
     }
- 
-    startTween(prev, 0, prev.leave);
-    startTween(next, 1, next.enter);
+
+    if (prev) startExit(prev);
+    if (next) startEnter(next);
   }
- 
+
   function updateTweens(now) {
     for (const key in planets) {
       const p = planets[key];
@@ -1128,6 +1442,26 @@ cloudMat.uniforms.uRot.value += speed * 0.2 * 1.35;
     }
     if (planets.mars.presence > 0.001) {
       marsMat.uniforms.uRot.value = (marsMat.uniforms.uRot.value + speed * 0.2) % 1;
+    }
+    if (planets.moon.presence > 0.001) {
+      moonMat.uniforms.uRot.value = (moonMat.uniforms.uRot.value + speed * 0.2) % 1;
+    }
+
+    // Galaxy: fade in/out smoothly and turn slowly around the page centre.
+    // Time-based (not frame-based) so it fades over the same duration on any screen.
+    const nowMs = performance.now();
+    const dt = Math.min((nowMs - galaxy.lastTime) / 1000, 0.25);
+    galaxy.lastTime = nowMs;
+    const gk = reduceMotion ? 1 : 1 - Math.exp(-dt / 0.55);
+    galaxy.alpha += (galaxy.target - galaxy.alpha) * gk;
+    if (Math.abs(galaxy.target - galaxy.alpha) < 0.003) galaxy.alpha = galaxy.target;
+
+    galaxyMesh.visible = galaxy.alpha > 0.003;
+    if (galaxyMesh.visible) {
+      galaxyMat.uniforms.uAlpha.value = galaxy.alpha;
+      galaxyMat.uniforms.uRot.value = (galaxyMat.uniforms.uRot.value + speed * 0.25) % 1;
+      galaxyMat.uniforms.uAspect.value =
+        renderer.domElement.width / Math.max(renderer.domElement.height, 1);
     }
  
     // Fade Earth in once its textures have arrived.
