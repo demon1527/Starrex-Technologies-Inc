@@ -37,7 +37,7 @@ function SoftwareDevelopment() {
     <main className="software-page">
       <section className="software-hero">
         <div className="software-hero-content">
-          <span className="section-label">SOFTWARE DEVELOPMENT</span>
+          <div className="hero-badge"><span className="status-dot" />SOFTWARE DEVELOPMENT</div>
           <h1>
             Software built
             <br />
