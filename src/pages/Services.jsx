@@ -93,7 +93,7 @@ function Services() {
     <main className="services-page">
       <section className="services-hero">
         <div className="services-hero-content">
-          <span className="section-label">WHAT WE DO</span>
+          <div className="hero-badge"><span className="status-dot" />WHAT WE DO</div>
           <h1>
             Technology with
             <br />
