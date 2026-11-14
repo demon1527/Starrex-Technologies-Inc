@@ -37,7 +37,7 @@ function Contact() {
 
       {/* HERO */}
       <section className="contact-hero">
-        <span className="section-label">LET'S WORK TOGETHER</span>
+        <div className="hero-badge"><span className="status-dot" />LET'S WORK TOGETHER</div>
 
         <h1>
           Have a Project
