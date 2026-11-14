@@ -111,13 +111,6 @@ function Services() {
           </div>
         </div>
 
-        <div className="services-hero-mark" aria-hidden="true">
-          <div className="services-orbit services-orbit-one" />
-          <div className="services-orbit services-orbit-two" />
-          <div className="services-orbit-core">S</div>
-          <span className="services-orbit-caption">IDEAS INTO IMPACT</span>
-        </div>
-
         <div className="services-hero-foot">
           <span>01 / 02 — OUR EXPERTISE</span>
           <span>DESIGNED TO MOVE YOU FORWARD</span>
