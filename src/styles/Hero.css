@@ -67,6 +67,9 @@
 }
 
 .hero-buttons {
+  position: relative;
+  z-index: 3;
+  margin-top: 18px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
