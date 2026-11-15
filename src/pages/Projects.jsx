@@ -54,12 +54,14 @@ function Projects() {
         </p>
       </div>
 
-      <div className="hero-buttons">
-  <Link to="/contact" className="hero-primary">
+      <div className="projects-buttons">
+  <Link to="/contact" className="projects-primary">
     Wanna build your own website?
     <span aria-hidden="true">↗</span>
   </Link>
 </div>
+
+        
 
       <div className="projects-container">
         <div className="projects-section-heading">
