@@ -61,8 +61,6 @@ function Projects() {
   </Link>
 </div>
 
-        
-
       <div className="projects-container">
         <div className="projects-section-heading">
           <span className="section-label">WEBSITES</span>
