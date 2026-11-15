@@ -2,7 +2,6 @@
   position: relative;
   padding: 130px 8%;
 
-  background: rgba(11, 8, 19, 0.7);  /* was #0b0813 */
   overflow: hidden;
 }
 
@@ -25,7 +24,7 @@
 }
 
 .about-left h2 {
-  font-size: clamp(42px, 5vw, 65px);
+  font-size: clamp(35px, 5vw, 50px);
   line-height: 1.15;
   letter-spacing: -3px;
 
@@ -38,7 +37,7 @@
 
 .about-left p {
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 2;
 
   margin-bottom: 18px;
@@ -124,4 +123,13 @@
     font-size: 46px;
   }
 
+}
+.about {
+  padding-bottom: 70px;
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding-bottom: 55px;
+  }
 }

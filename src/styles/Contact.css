@@ -1,9 +1,5 @@
 .contact-page {
-    position: relative;
-  padding: 200px 8%;
-
-  background: rgba(11, 8, 19, 0.7);  /* was #0b0813 */
-  overflow: hidden;
+background: transparent;
   }
 
 /* HERO */
@@ -377,4 +373,13 @@ background: transparent;
     letter-spacing: -2px; line-height: 1.14;
   }
   .contact-hero p { font-size: 14px; line-height: 1.8; }
+}
+.contact-page {
+  padding-bottom: 45px;
+}
+
+@media (max-width: 600px) {
+  .contact-page {
+    padding-bottom: 40px;
+  }
 }

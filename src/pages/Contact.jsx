@@ -8,6 +8,12 @@ function Contact() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
 
+  const [budget, setBudget] = useState("");
+  const [customBudget, setCustomBudget] = useState("");
+
+  const [timeline, setTimeline] = useState("");
+  const [customTimeline, setCustomTimeline] = useState("");
+
   const sendEmail = async (e) => {
     e.preventDefault();
 
@@ -24,6 +30,11 @@ function Contact() {
 
       setStatus("success");
       form.current.reset();
+
+      setBudget("");
+      setCustomBudget("");
+      setTimeline("");
+      setCustomTimeline("");
     } catch (error) {
       console.error("EmailJS Error:", error);
       setStatus("error");
@@ -37,7 +48,10 @@ function Contact() {
 
       {/* HERO */}
       <section className="contact-hero">
-        <div className="hero-badge"><span className="status-dot" />LET'S WORK TOGETHER</div>
+        <div className="hero-badge">
+          <span className="status-dot" />
+          LET'S WORK TOGETHER
+        </div>
 
         <h1>
           Have a Project
@@ -130,35 +144,91 @@ function Contact() {
 
           <div className="form-row">
 
+            {/* BUDGET */}
             <div className="form-group">
               <label>Estimated Budget</label>
 
-              <select name="budget" defaultValue="">
-                <option value="" disabled>Select your budget</option>
+              <select
+                value={budget}
+                onChange={(e) => {
+                  setBudget(e.target.value);
+                  setCustomBudget("");
+                }}
+              >
+                <option value="">Select your budget</option>
                 <option>Under $100</option>
                 <option>$100 – $300</option>
                 <option>$300 – $500</option>
                 <option>$500 – $1,000</option>
-                <option>$1,000+</option>
-                <option>Not sure yet</option>
+                <option value="custom">Your Price</option>
               </select>
+
+              <input
+                type="hidden"
+                name="budget"
+                value={
+                  budget === "custom"
+                    ? `Your Price: ${customBudget}`
+                    : budget
+                }
+              />
+
+              {budget === "custom" && (
+                <input
+                  type="text"
+                  value={customBudget}
+                  onChange={(e) => setCustomBudget(e.target.value)}
+                  placeholder="Enter your proposed budget..."
+                  aria-label="Your custom budget"
+                  required
+                />
+              )}
             </div>
 
+            {/* TIMELINE */}
             <div className="form-group">
               <label>Preferred Timeline</label>
 
-              <select name="timeline" defaultValue="">
-                <option value="" disabled>Select timeline</option>
+              <select
+                value={timeline}
+                onChange={(e) => {
+                  setTimeline(e.target.value);
+                  setCustomTimeline("");
+                }}
+              >
+                <option value="">Select timeline</option>
                 <option>As soon as possible</option>
                 <option>Within 2 weeks</option>
                 <option>Within a month</option>
                 <option>1–3 months</option>
-                <option>Flexible</option>
+                <option value="custom">Your Duration</option>
               </select>
+
+              <input
+                type="hidden"
+                name="timeline"
+                value={
+                  timeline === "custom"
+                    ? `Your Duration: ${customTimeline}`
+                    : timeline
+                }
+              />
+
+              {timeline === "custom" && (
+                <input
+                  type="text"
+                  value={customTimeline}
+                  onChange={(e) => setCustomTimeline(e.target.value)}
+                  placeholder="Describe your preferred duration..."
+                  aria-label="Your custom duration"
+                  required
+                />
+              )}
             </div>
 
           </div>
 
+          {/* PROJECT DETAILS */}
           <div className="form-group">
             <label>Project Details *</label>
 

@@ -55,7 +55,6 @@
 
 .hero h1 span {
   color: var(--purple-light);
-  text-shadow: 0 0 30px rgba(139, 92, 246, 0.35);
 }
 
 .hero-description {

@@ -266,3 +266,12 @@
   }
   .projects-hero p { font-size: 14px; line-height: 1.8; }
 }
+.projects-page {
+  padding-bottom: 45px;
+}
+
+@media (max-width: 600px) {
+  .projects-page {
+    padding-bottom: 40px;
+  }
+}

@@ -40,9 +40,10 @@ function SoftwareDevelopment() {
           <div className="hero-badge"><span className="status-dot" />SOFTWARE DEVELOPMENT</div>
           <h1>
             Software built
-            <span> around</span>
             <br />
-            <span>your world.</span>
+            <span>around your</span>
+            <br/>
+            <span>world.</span>
           </h1>
           <p>
             The right software should make complicated work feel simpler.
@@ -62,10 +63,6 @@ function SoftwareDevelopment() {
           <span>THOUGHTFUL ENGINEERING</span>
           <strong>Built to<br />work smarter.</strong>
           <i>ST / 02</i>
-        </div>
-        <div className="software-hero-foot">
-          <span>STARREX TECHNOLOGIES / SOFTWARE</span>
-          <span>FROM CHALLENGE TO SOLUTION</span>
         </div>
       </section>
 

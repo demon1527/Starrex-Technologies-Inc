@@ -8,19 +8,25 @@ function About() {
         <div className="about-left">
           <span className="section-label">WHO WE ARE</span>
           <h2>
-            Technology with
+            THE
             <br />
-            <span>Purpose.</span>
+            <span>STARREX IDENTITY.</span>
           </h2>
           <p>
-            STARREX TECHNOLOGIES is a digital innovation studio focused on
-            building meaningful technology. We combine creativity, engineering,
-            and forward thinking to transform ideas into useful digital
-            experiences.
+            STARREX TECHNOLOGIES is a Software Studio focused on
+            building innovative digital experiences and reliable 
+            software solutions. We bring together creativity, technical expertise
+            and a commitment to excellence to help businesses
+            turn imaginations into meaningful outcomes.
           </p>
           <p>
             From modern websites to software developments, we
             believe every solution should be built with purpose and precision.
+          </p>
+          <p>
+            At Starrex, we believe technology should do more than 
+            solve problems... it should create opportunities, drive
+            progress and shape the future of your business.
           </p>
           <Link to="/services" className="about-link">
             Discover What We Do <span aria-hidden="true">↗</span>

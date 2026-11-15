@@ -95,9 +95,10 @@ function Services() {
         <div className="services-hero-content">
           <div className="hero-badge"><span className="status-dot" />WHAT WE DO</div>
           <h1>
-            Technology with
+            Technology
             <br />
-            <span>Purpose.</span>
+            with
+            <span> Purpose.</span>
           </h1>
           <p>
             From powerful websites to purpose-built software, we turn ideas
@@ -113,10 +114,7 @@ function Services() {
           </div>
         </div>
 
-        <div className="services-hero-foot">
-          <span>01 / 02 — OUR EXPERTISE</span>
-          <span>DESIGNED TO MOVE YOU FORWARD</span>
-        </div>
+       
       </section>
 
       <section className="services-offerings" id="our-services">

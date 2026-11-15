@@ -40,9 +40,12 @@ function Projects() {
       <div className="projects-hero">
         <div className="hero-badge"><span className="status-dot" />OUR WORK</div>
         <h1>
-          Ideas Into
-          <br />
-          <span>Reality.</span>
+          Turning
+          <span> Dreams </span>
+          <br/>
+          Into
+          
+          <span> Reality.</span>
         </h1>
         <p>
           A collection of digital experiences, creative solutions and
