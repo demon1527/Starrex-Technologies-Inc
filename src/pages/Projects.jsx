@@ -1,4 +1,5 @@
 import "../styles/Projects.css";
+import { Link } from "react-router-dom";
 
 const projects = [
   {
@@ -53,11 +54,20 @@ function Projects() {
         </p>
       </div>
 
+      <div className="hero-buttons">
+  <Link to="/contact" className="hero-primary">
+    Wanna build your own website?
+    <span aria-hidden="true">↗</span>
+  </Link>
+</div>
+
+        
+
       <div className="projects-container">
         <div className="projects-section-heading">
-          <span className="section-label">SELECTED WORK</span>
+          <span className="section-label">WEBSITES</span>
           <h2>
-            Featured Projects<span>.</span>
+            Projects we have built<span>.</span>
           </h2>
         </div>
 
