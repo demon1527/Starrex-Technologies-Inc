@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PlanetController from "./components/PlanetController";
 import ScrollToTopButton from "./components/ScrollToTop";
+import ScrollToTopOnRoute from "./components/ScrollToTopOnRoute";
 
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTopOnRoute />
       <ScrollToTopButton />
       <PlanetController />
       <Navbar />

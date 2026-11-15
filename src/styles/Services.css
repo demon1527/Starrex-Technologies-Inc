@@ -192,6 +192,8 @@
 }
 
 .services-offerings {
+  margin-top: -50px;
+  padding-left: 8%;
   padding-top: 110px;
   padding-bottom: 120px;
 }
@@ -376,6 +378,8 @@
 }
 
 .services-process {
+    margin-top: -90px;
+  padding-left: 8%;
   padding-top: 120px;
   padding-bottom: 125px;
 }
@@ -430,13 +434,13 @@
 }
 
 .services-difference {
+  margin-top: -50px;
   padding-top: 100px;
   padding-bottom: 110px;
   display: grid;
   grid-template-columns: 0.9fr 1.1fr;
   gap: 90px;
   align-items: start;
-  background: rgba(13, 9, 23, 0.58);
 }
 
 .services-reasons {
@@ -475,6 +479,7 @@
 }
 
 .services-cta {
+  margin-top: -50px;
   padding-top: 120px;
   padding-bottom: 130px;
   text-align: center;
