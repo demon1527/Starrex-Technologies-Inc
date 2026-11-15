@@ -60,7 +60,7 @@
 
 .hero-description {
   max-width: 620px;
-  margin: 28px 0 35px;
+  margin: 28px 0 0;
   color: white;
   font-size: 16px;
   line-height: 1.9;
@@ -69,7 +69,8 @@
 .hero-buttons {
   position: relative;
   z-index: 3;
-  margin-top: 18px;
+  margin-top: 0;
+  padding-top: 36px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
