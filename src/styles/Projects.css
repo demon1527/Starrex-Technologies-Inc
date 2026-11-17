@@ -311,3 +311,11 @@
     padding-bottom: 40px;
   }
 }
+/* Mobile: start the hero just below the navbar instead of centring it */
+@media (max-width: 600px) {
+  .projects-hero {
+    min-height: auto;
+    justify-content: flex-start;
+    padding-top: 110px;
+  }
+}
