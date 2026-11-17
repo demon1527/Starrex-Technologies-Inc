@@ -1,20 +1,21 @@
 .ambient-sound-toggle {
   position: fixed;
   left: 30px;
-  bottom: 70px;
+  bottom: 48px;
   z-index: 9999;
   width: 48px;
   height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(167, 139, 250, 0.4);
+  border: 1.5px solid rgba(167, 139, 250, 0.9);
   border-radius: 50%;
-  background: rgba(139, 92, 246, 0.85);
-  color: #fff;
+  background: rgba(8, 6, 20, 0.22);
+  color: #d9ccff;
   cursor: pointer;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.12);
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -29,9 +30,14 @@
 }
 
 .ambient-sound-toggle:hover {
-  background: var(--purple-dark);
-  transform: translateY(-5px);
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.16);
+  transform: translateY(-3px);
+  box-shadow: 0 0 18px rgba(139, 92, 246, 0.28);
+}
+
+.ambient-sound-toggle.is-playing {
+  border-color: rgba(196, 181, 253, 0.95);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.24);
 }
 
 .ambient-sound-toggle:focus-visible {
@@ -68,7 +74,7 @@
 @media (max-width: 600px) {
   .ambient-sound-toggle {
     left: 18px;
-    bottom: 20px;
+    bottom: 14px;
     width: 43px;
     height: 43px;
   }
