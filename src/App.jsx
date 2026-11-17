@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PlanetController from "./components/PlanetController";
 import ScrollToTopButton from "./components/ScrollToTop";
+import AmbientSoundToggle from "./components/AmbientSoundToggle";
 import ScrollToTopOnRoute from "./components/ScrollToTopOnRoute";
 
 import Home from "./pages/Home";
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTopOnRoute />
       <ScrollToTopButton />
+      <AmbientSoundToggle />
       <PlanetController />
       <Navbar />
 
