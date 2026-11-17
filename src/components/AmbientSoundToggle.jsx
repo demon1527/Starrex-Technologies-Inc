@@ -112,8 +112,12 @@ function AmbientSoundToggle() {
       const now = audio.context.currentTime;
       const nextPlaying = !isPlayingRef.current;
 
-      audio.master.gain.cancelScheduledValues(now);
-      audio.master.gain.setValueAtTime(audio.master.gain.value, now);
+      if (typeof audio.master.gain.cancelAndHoldAtTime === "function") {
+        audio.master.gain.cancelAndHoldAtTime(now);
+      } else {
+        audio.master.gain.cancelScheduledValues(now);
+        audio.master.gain.setValueAtTime(audio.master.gain.value, now);
+      }
       audio.master.gain.linearRampToValueAtTime(
         nextPlaying ? TARGET_VOLUME : 0,
         now + FADE_SECONDS
