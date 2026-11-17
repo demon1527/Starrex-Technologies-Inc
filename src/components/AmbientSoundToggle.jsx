@@ -2,18 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/AmbientSound.css";
 
 const FADE_SECONDS = 4;
-const TARGET_VOLUME = 0.16;
+const TARGET_VOLUME = 0.2;
 
 function createAmbientSound(context) {
   const master = context.createGain();
   master.gain.value = 0;
   master.connect(context.destination);
 
-  // Layered low-frequency tones create a quiet, space-like drone.
+  // A soft, warm sub-bass foundation — kept subtle so it never sounds like static.
   const layers = [
-    { frequency: 48, type: "sine", volume: 0.34, detune: -4 },
-    { frequency: 73.4, type: "sine", volume: 0.2, detune: 3 },
-    { frequency: 110, type: "triangle", volume: 0.08, detune: -7 },
+    { frequency: 65.41, type: "sine", volume: 0.13, detune: -3 },
+    { frequency: 98, type: "sine", volume: 0.08, detune: 2 },
   ];
 
   const oscillators = layers.map(({ frequency, type, volume, detune }) => {
@@ -32,13 +31,51 @@ function createAmbientSound(context) {
     return oscillator;
   });
 
-  // Soft filtered noise adds a distant, airy texture without a loud hiss.
+  // Warm, musical pad tones add the dreamy lo-fi harmony.
+  const padNotes = [
+    { frequency: 130.81, volume: 0.035, rate: 0.075, depth: 0.012 },
+    { frequency: 164.81, volume: 0.026, rate: 0.061, depth: 0.009 },
+    { frequency: 196, volume: 0.03, rate: 0.052, depth: 0.011 },
+    { frequency: 246.94, volume: 0.018, rate: 0.043, depth: 0.007 },
+    { frequency: 293.66, volume: 0.012, rate: 0.037, depth: 0.005 },
+  ];
+
+  const padOscillators = [];
+  const movementOscillators = [];
+
+  padNotes.forEach(({ frequency, volume, rate, depth }) => {
+    const oscillator = context.createOscillator();
+    const noteGain = context.createGain();
+    const drift = context.createOscillator();
+    const driftGain = context.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.value = frequency;
+    noteGain.gain.value = volume;
+
+    // Each note gently swells and recedes at its own pace.
+    drift.type = "sine";
+    drift.frequency.value = rate;
+    driftGain.gain.value = depth;
+    drift.connect(driftGain);
+    driftGain.connect(noteGain.gain);
+
+    oscillator.connect(noteGain);
+    noteGain.connect(master);
+    oscillator.start();
+    drift.start();
+
+    padOscillators.push(oscillator);
+    movementOscillators.push(drift);
+  });
+
+  // Very quiet, filtered air gives the mix a sense of distant space.
   const bufferSize = context.sampleRate * 3;
   const noiseBuffer = context.createBuffer(1, bufferSize, context.sampleRate);
   const channel = noiseBuffer.getChannelData(0);
 
   for (let i = 0; i < bufferSize; i += 1) {
-    channel[i] = (Math.random() * 2 - 1) * 0.22;
+    channel[i] = (Math.random() * 2 - 1) * 0.1;
   }
 
   const noise = context.createBufferSource();
@@ -48,25 +85,32 @@ function createAmbientSound(context) {
   noise.buffer = noiseBuffer;
   noise.loop = true;
   filter.type = "lowpass";
-  filter.frequency.value = 420;
-  filter.Q.value = 0.45;
-  noiseGain.gain.value = 0.12;
+  filter.frequency.value = 650;
+  filter.Q.value = 0.35;
+  noiseGain.gain.value = 0.035;
 
   noise.connect(filter);
   filter.connect(noiseGain);
   noiseGain.connect(master);
   noise.start();
 
-  // A very slow LFO gently moves the atmospheric filter.
-  const movement = context.createOscillator();
-  const movementGain = context.createGain();
-  movement.frequency.value = 0.055;
-  movementGain.gain.value = 115;
-  movement.connect(movementGain);
-  movementGain.connect(filter.frequency);
-  movement.start();
+  // Slow filter drift creates gentle movement rather than a static drone.
+  const filterMovement = context.createOscillator();
+  const filterMovementGain = context.createGain();
+  filterMovement.frequency.value = 0.035;
+  filterMovementGain.gain.value = 220;
+  filterMovement.connect(filterMovementGain);
+  filterMovementGain.connect(filter.frequency);
+  filterMovement.start();
 
-  return { master, oscillators, noise, movement };
+  return {
+    master,
+    oscillators,
+    padOscillators,
+    movementOscillators,
+    noise,
+    filterMovement,
+  };
 }
 
 function AmbientSoundToggle() {
@@ -141,19 +185,17 @@ function AmbientSoundToggle() {
       aria-pressed={isPlaying}
       title={isPlaying ? "Mute Ambient Sound" : "Enable Ambient Sound"}
     >
-      {isPlaying ? (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M11 5 6 9H3v6h3l5 4V5Z" />
-          <path d="M15.5 8.5a5 5 0 0 1 0 7" />
-          <path d="M18.5 5.5a9 9 0 0 1 0 13" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M11 5 6 9H3v6h3l5 4V5Z" />
-          <path d="m16 9 5 6" />
-          <path d="m21 9-5 6" />
-        </svg>
-      )}
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+        {isPlaying ? (
+          <>
+            <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+            <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+          </>
+        ) : (
+          <path d="m16 9 5 6m0-6-5 6" />
+        )}
+      </svg>
       <span className="ambient-sound-tooltip">
         {isPlaying ? "Mute Ambient Sound" : "Enable Ambient Sound"}
       </span>
