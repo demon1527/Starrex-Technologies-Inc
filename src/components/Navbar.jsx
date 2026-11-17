@@ -12,18 +12,19 @@ const navigation = [
 ];
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  // The menu counts as open only on the page it was opened on, so it closes
+  // by itself on any route change (links, back/forward button).
+  const [openPath, setOpenPath] = useState(null);
   const location = useLocation();
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [location.pathname]);
+  const isOpen = openPath === location.pathname;
+  const closeMenu = () => setOpenPath(null);
+  const toggleMenu = () => setOpenPath(isOpen ? null : location.pathname);
 
   useEffect(() => {
     if (!isOpen) return undefined;
 
     const closeOnEscape = (event) => {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") setOpenPath(null);
     };
 
     window.addEventListener("keydown", closeOnEscape);
@@ -36,7 +37,7 @@ function Navbar() {
         to="/"
         className="navbar-logo"
         aria-label="Starrex Technologies home"
-        onClick={() => setIsOpen(false)}
+        onClick={closeMenu}
       >
         <img src="/starrex-logo.png" alt="Starrex Technologies" />
       </Link>
@@ -47,7 +48,7 @@ function Navbar() {
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={isOpen}
         aria-controls="primary-navigation"
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={toggleMenu}
       >
         <span />
         <span />
@@ -72,7 +73,7 @@ function Navbar() {
                 .filter(Boolean)
                 .join(" ")
             }
-            onClick={() => setIsOpen(false)}
+            onClick={closeMenu}
           >
             {item.label}
             {item.contact && <span aria-hidden="true">↗</span>}

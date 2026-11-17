@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "../styles/Footer.css";
+import { contactInfo } from "../utils/contactInfo";
 
 function Footer() {
   return (
@@ -21,6 +22,21 @@ function Footer() {
             <Link to="/about">About</Link>
             <Link to="/projects">Projects</Link>
             <Link to="/contact">Contact</Link>
+            <a href={`mailto:${contactInfo.email}`}>Email</a>
+            <a
+              href={contactInfo.whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={contactInfo.instagramLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
           </div>
         </div>
 

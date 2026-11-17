@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import "../styles/Contact.css";
+import { contactInfo } from "../utils/contactInfo";
 
 function Contact() {
   const form = useRef();
@@ -16,6 +17,9 @@ function Contact() {
 
   const sendEmail = async (e) => {
     e.preventDefault();
+
+    // Honeypot: real visitors never see this field, bots fill it in.
+    if (form.current.elements["company"]?.value) return;
 
     setLoading(true);
     setStatus("");
@@ -92,6 +96,33 @@ function Contact() {
               </p>
             </div>
           </div>
+
+          <div className="contact-direct">
+            <span className="section-label">OR REACH US DIRECTLY</span>
+
+            <a href={`mailto:${contactInfo.email}`}>
+              <span>Email</span>
+              {contactInfo.email}
+            </a>
+
+            <a
+              href={contactInfo.whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>WhatsApp</span>
+              {contactInfo.whatsappDisplay}
+            </a>
+
+            <a
+              href={contactInfo.instagramLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>Instagram</span>
+              {contactInfo.instagramHandle}
+            </a>
+          </div>
         </div>
 
         <form
@@ -105,11 +136,23 @@ function Contact() {
             <p>Fill in the details below to get started.</p>
           </div>
 
+          <div className="contact-honeypot" aria-hidden="true">
+            <label htmlFor="company">Company</label>
+            <input
+              id="company"
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           <div className="form-row">
 
             <div className="form-group">
-              <label>Full Name *</label>
+              <label htmlFor="from_name">Full Name *</label>
               <input
+                id="from_name"
                 type="text"
                 name="from_name"
                 placeholder="Your name"
@@ -118,8 +161,9 @@ function Contact() {
             </div>
 
             <div className="form-group">
-              <label>Email Address *</label>
+              <label htmlFor="reply_to">Email Address *</label>
               <input
+                id="reply_to"
                 type="email"
                 name="reply_to"
                 placeholder="you@example.com"
@@ -130,9 +174,9 @@ function Contact() {
           </div>
 
           <div className="form-group">
-            <label>Service Required *</label>
+            <label htmlFor="service">Service Required *</label>
 
-            <select name="service" required defaultValue="">
+            <select id="service" name="service" required defaultValue="">
               <option value="" disabled>Select a service</option>
               <option>Website Development</option>
               <option>E-Commerce Website</option>
@@ -146,9 +190,10 @@ function Contact() {
 
             {/* BUDGET */}
             <div className="form-group">
-              <label>Estimated Budget</label>
+              <label htmlFor="budget-select">Estimated Budget</label>
 
               <select
+                id="budget-select"
                 value={budget}
                 onChange={(e) => {
                   setBudget(e.target.value);
@@ -187,9 +232,10 @@ function Contact() {
 
             {/* TIMELINE */}
             <div className="form-group">
-              <label>Preferred Timeline</label>
+              <label htmlFor="timeline-select">Preferred Timeline</label>
 
               <select
+                id="timeline-select"
                 value={timeline}
                 onChange={(e) => {
                   setTimeline(e.target.value);
@@ -230,9 +276,10 @@ function Contact() {
 
           {/* PROJECT DETAILS */}
           <div className="form-group">
-            <label>Project Details *</label>
+            <label htmlFor="message">Project Details *</label>
 
             <textarea
+              id="message"
               name="message"
               rows="5"
               placeholder="Tell us about your project, requirements, and ideas..."

@@ -1,0 +1,66 @@
+.notfound-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px 6% 80px;
+  position: relative;
+  z-index: 1;
+}
+
+.notfound-code {
+  color: var(--purple-light);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 6px;
+}
+
+.notfound-page h1 {
+  font-size: clamp(45px, 7vw, 80px);
+  line-height: 1.1;
+  letter-spacing: -3px;
+  margin: 20px 0;
+}
+
+.notfound-page h1 span {
+  color: var(--purple-light);
+}
+
+.notfound-page p {
+  max-width: 460px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+
+.notfound-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 15px 25px;
+  border-radius: 10px;
+  background: var(--purple);
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
+  transition: 0.3s ease;
+}
+
+.notfound-button:hover {
+  background: var(--purple-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+}
+
+.notfound-button span {
+  margin-left: 10px;
+}
+
+@media (max-width: 600px) {
+  .notfound-page h1 {
+    letter-spacing: -2px;
+  }
+}

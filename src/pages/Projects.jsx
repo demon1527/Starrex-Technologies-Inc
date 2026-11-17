@@ -11,7 +11,7 @@ const projects = [
     tech: ["React", "Firebase", "CSS"],
     status: "Live Project",
     link: "https://thefoldscrochet.com",
-    image: "/Images/the-folds-preview.png",
+    image: "/Images/the-folds-preview.webp",
   },
   {
     number: "02",
