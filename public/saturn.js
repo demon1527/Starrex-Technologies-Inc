@@ -1587,7 +1587,20 @@ cloudMat.uniforms.uRot.value += speed * 0.2 * 1.35;
     });
     viewportController.resize();
  
-    // Start on the Home composition (Earth) without a first-frame jump.
+    // Pick the right scene for the page that was actually opened, before the
+    // first frame is drawn. Without this the script would always start on
+    // Earth and flash it until React loads and asks for the real scene.
+    // (Keep this mapping in sync with PlanetController.jsx.)
+    const startPath = window.location.pathname;
+    let startScene = "earth";
+    if (startPath.startsWith("/projects")) startScene = "saturn";
+    else if (startPath.startsWith("/services")) startScene = "mars";
+    else if (startPath.startsWith("/software-development")) startScene = "moon";
+    else if (startPath.startsWith("/about")) startScene = "none";
+    else if (startPath.startsWith("/contact")) startScene = "galaxy";
+    showPlanet(startScene);
+
+    // Start on that composition without a first-frame jump.
     cur.set(base.x, base.y);
     applyPlanetTransforms();
  
