@@ -1597,6 +1597,7 @@ cloudMat.uniforms.uRot.value += speed * 0.2 * 1.35;
     else if (startPath.startsWith("/services")) startScene = "mars";
     else if (startPath.startsWith("/software-development")) startScene = "moon";
     else if (startPath.startsWith("/about")) startScene = "none";
+    else if (startPath.startsWith("/privacy") || startPath.startsWith("/terms")) startScene = "none";
     else if (startPath.startsWith("/contact")) startScene = "galaxy";
     showPlanet(startScene);
 
