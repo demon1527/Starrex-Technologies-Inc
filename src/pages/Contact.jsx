@@ -96,33 +96,6 @@ function Contact() {
               </p>
             </div>
           </div>
-
-          <div className="contact-direct">
-            <span className="section-label">OR REACH US DIRECTLY</span>
-
-            <a href={`mailto:${contactInfo.email}`}>
-              <span>Email</span>
-              {contactInfo.email}
-            </a>
-
-            <a
-              href={contactInfo.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>WhatsApp</span>
-              {contactInfo.whatsappDisplay}
-            </a>
-
-            <a
-              href={contactInfo.instagramLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Instagram</span>
-              {contactInfo.instagramHandle}
-            </a>
-          </div>
         </div>
 
         <form
@@ -319,6 +292,34 @@ function Contact() {
           </p>
 
         </form>
+
+        <div className="contact-direct">
+          <span className="section-label">OR REACH US DIRECTLY</span>
+
+          <a href={`mailto:${contactInfo.email}`}>
+            <span>Email</span>
+            {contactInfo.email}
+          </a>
+
+          <a
+            href={contactInfo.whatsappLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>WhatsApp</span>
+            {contactInfo.whatsappDisplay}
+          </a>
+
+          <a
+            href={contactInfo.instagramLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>Instagram</span>
+            {contactInfo.instagramHandle}
+          </a>
+        </div>
+
 
       </section>
 

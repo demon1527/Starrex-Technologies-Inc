@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 150px 8% 80px;
+  padding: 9.375rem 8% 5rem;
   overflow: hidden;
   background: radial-gradient(
     ellipse at 50% 45%,
@@ -18,39 +18,39 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 1100px;
+  max-width: 68.75rem;
   text-align: left;
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 18px;
+  gap: 0.625rem;
+  padding: 0.6875rem 1.125rem;
   border: 1px solid rgba(167, 139, 250, 0.25);
-  border-radius: 50px;
+  border-radius: 3.125rem;
   background: rgba(139, 92, 246, 0.08);
   color: var(--purple-light);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 2px;
-  margin-bottom: 35px;
+  margin-bottom: 2.1875rem;
 }
 
 .status-dot {
-  width: 7px;
-  height: 7px;
+  width: 0.4375rem;
+  height: 0.4375rem;
   background: #a78bfa;
   border-radius: 50%;
-  box-shadow: 0 0 12px #a78bfa;
+  box-shadow: 0 0 0.75rem #a78bfa;
 }
 
 .hero h1 {
-  font-size: clamp(48px, 7.5vw, 92px);
-  margin-top: -20px;
+  font-size: clamp(3rem, 7.5vw, 5.75rem);
+  margin-top: -1.25rem;
   font-weight: 800;
   line-height: 1.12;
-  letter-spacing: clamp(-5px, -0.35vw, -2px);
+  letter-spacing: clamp(-0.3125rem, -0.35vw, -2px);
 }
 
 .hero h1 span {
@@ -58,10 +58,10 @@
 }
 
 .hero-description {
-  max-width: 620px;
-  margin: 28px 0 0;
+  max-width: 38.75rem;
+  margin: 1.75rem 0 0;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.9;
 }
 
@@ -69,12 +69,12 @@
   position: relative;
   z-index: 3;
   margin-top: 0;
-  padding-top: 36px;
+  padding-top: 2.25rem;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .hero-primary,
@@ -82,9 +82,9 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 16px 25px;
-  border-radius: 10px;
-  font-size: 13px;
+  padding: 1rem 1.5625rem;
+  border-radius: 0.625rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   transition: 0.3s ease;
 }
@@ -92,17 +92,17 @@
 .hero-primary {
   background: var(--purple);
   color: white;
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 1.5625rem rgba(139, 92, 246, 0.2);
 }
 
 .hero-primary:hover {
   background: var(--purple-dark);
-  transform: translateY(-3px);
-  box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+  transform: translateY(-0.1875rem);
+  box-shadow: 0 0 1.875rem rgba(139, 92, 246, 0.4);
 }
 
 .hero-primary span {
-  margin-left: 10px;
+  margin-left: 0.625rem;
 }
 
 .hero-secondary {
@@ -120,36 +120,36 @@
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 36px;
-  margin-top: 88px;
+  gap: 2.25rem;
+  margin-top: 5.5rem;
   color: rgba(255, 255, 255, 0.45);
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
-  letter-spacing: 3px;
+  letter-spacing: 0.1875rem;
 }
 
 @media (max-width: 600px) {
   .hero {
     min-height: 88vh;
-    padding: 130px 6% 65px;
+    padding: 8.125rem 6% 4.0625rem;
   }
 
   .hero-badge {
-    gap: 8px;
-    padding: 9px 13px;
-    margin-bottom: 28px;
-    font-size: 9px;
+    gap: 0.5rem;
+    padding: 0.5625rem 0.8125rem;
+    margin-bottom: 1.75rem;
+    font-size: 0.5625rem;
     letter-spacing: 1.2px;
   }
 
   .hero h1 {
-    font-size: clamp(40px, 11vw, 52px);
+    font-size: clamp(2.5rem, 11vw, 3.25rem);
     letter-spacing: -2px;
     line-height: 1.14;
   }
 
   .hero-description {
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.8;
   }
 
@@ -161,13 +161,13 @@
   .hero-primary,
   .hero-secondary {
     width: 100%;
-    min-height: 50px;
+    min-height: 3.125rem;
   }
 
   .hero-bottom {
-    gap: 18px;
-    margin-top: 58px;
-    font-size: 8px;
+    gap: 1.125rem;
+    margin-top: 3.625rem;
+    font-size: 0.5rem;
     letter-spacing: 1.5px;
   }
 }
@@ -183,7 +183,7 @@
   .hero {
     min-height: auto;
     align-items: flex-start;
-    padding-top: 110px;
-    padding-bottom: 60px;
+    padding-top: 6.875rem;
+    padding-bottom: 3.75rem;
   }
 }

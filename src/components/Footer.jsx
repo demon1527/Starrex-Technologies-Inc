@@ -10,24 +10,12 @@ function Footer() {
       <div className="footer-container">
 
         <div className="footer-top">
-          <Link to="/" className="footer-logo">
-            <img src="/starrex-logo.png" alt="Starrex Technologies" />
-          </Link>
+          <div className="footer-brand">
+            <Link to="/" className="footer-logo">
+              <img src="/starrex-logo.png" alt="Starrex Technologies" />
+            </Link>
 
-          <p>Building the Future Through Technology.</p>
-        </div>
-
-        <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Starrex Technologies Inc. All rights reserved.</p>
-
-          <div className="footer-right">
-            <div className="footer-links">
-              <Link to="/about">About</Link>
-              <Link to="/projects">Projects</Link>
-              <Link to="/contact">Contact</Link>
-              <Link to="/privacy">Privacy</Link>
-              <Link to="/terms">Terms</Link>
-            </div>
+            <p>Building the Future Through Technology.</p>
 
             <div className="footer-socials">
               <a
@@ -57,6 +45,18 @@ function Footer() {
               </a>
             </div>
           </div>
+
+          <nav className="footer-links" aria-label="Footer">
+            <Link to="/about">About</Link>
+            <Link to="/projects">Projects</Link>
+            <Link to="/contact">Contact</Link>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link>
+          </nav>
+        </div>
+
+        <div className="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} Starrex Technologies Inc. All rights reserved.</p>
         </div>
 
       </div>

@@ -1,19 +1,19 @@
 .navbar {
   position: fixed;
-  top: 20px;
+  top: 1.25rem;
   left: 5%;
   width: 90%;
-  min-height: 76px;
-  padding: 0 28px;
+  min-height: 4.75rem;
+  padding: 0 1.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: 1.75rem;
   background: rgba(15, 10, 27, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(1.25rem);
+  -webkit-backdrop-filter: blur(1.25rem);
   border: 1px solid rgba(167, 139, 250, 0.2);
-  border-radius: 18px;
+  border-radius: 1.125rem;
   z-index: 1000;
 }
  
@@ -26,8 +26,8 @@
 .navbar-logo img {
   display: block;
   width: auto;
-  height: 48px;
-  max-width: 190px;
+  height: 3rem;
+  max-width: 11.875rem;
   object-fit: contain;
 }
  
@@ -35,12 +35,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: clamp(16px, 2.2vw, 32px);
+  gap: clamp(1rem, 2.2vw, 2rem);
 }
  
 .navbar-links a {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
   white-space: nowrap;
   transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
@@ -54,19 +54,19 @@
 .navbar-links a:focus-visible,
 .navbar-toggle:focus-visible {
   outline: 2px solid var(--purple-light);
-  outline-offset: 4px;
+  outline-offset: 0.25rem;
 }
  
 .navbar-links .navbar-contact {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
   border: 1px solid rgba(167, 139, 250, 0.35);
-  border-radius: 10px;
+  border-radius: 0.625rem;
   background: var(--purple);
   color: white;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
  
@@ -74,20 +74,20 @@
 .navbar-links .navbar-contact.active {
   background: var(--purple-dark);
   color: white;
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 1.5625rem rgba(139, 92, 246, 0.3);
 }
  
 .navbar-contact span {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
  
 .navbar-toggle {
   display: none;
-  width: 44px;
-  height: 44px;
-  padding: 11px;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0.6875rem;
   border: 1px solid rgba(167, 139, 250, 0.25);
-  border-radius: 11px;
+  border-radius: 0.6875rem;
   background: rgba(139, 92, 246, 0.1);
   cursor: pointer;
 }
@@ -96,7 +96,7 @@
   display: block;
   width: 100%;
   height: 2px;
-  margin: 4px 0;
+  margin: 0.25rem 0;
   border-radius: 2px;
   background: #fff;
   transition: transform 0.2s ease, opacity 0.2s ease;
@@ -104,15 +104,15 @@
  
 @media (max-width: 900px) {
   .navbar {
-    top: 14px;
+    top: 0.875rem;
     left: 4%;
     width: 92%;
-    min-height: 68px;
-    padding: 0 18px;
+    min-height: 4.25rem;
+    padding: 0 1.125rem;
   }
  
   .navbar-logo img {
-    height: 43px;
+    height: 2.6875rem;
   }
  
   .navbar-toggle {
@@ -122,22 +122,22 @@
  
   .navbar-links {
     position: absolute;
-    top: calc(100% + 10px);
+    top: calc(100% + 0.625rem);
     left: 0;
     right: 0;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 4px;
-    padding: 12px;
+    gap: 0.25rem;
+    padding: 0.75rem;
     border: 1px solid rgba(167, 139, 250, 0.22);
-    border-radius: 16px;
+    border-radius: 1rem;
     background: rgba(12, 8, 22, 0.97);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+    box-shadow: 0 1.125rem 2.8125rem rgba(0, 0, 0, 0.38);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateY(-8px);
+    transform: translateY(-0.5rem);
     transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
   }
  
@@ -150,9 +150,9 @@
  
   .navbar-links a {
     display: block;
-    padding: 13px 14px;
-    border-radius: 9px;
-    font-size: 14px;
+    padding: 0.8125rem 0.875rem;
+    border-radius: 0.5625rem;
+    font-size: 0.875rem;
   }
  
   .navbar-links a:hover,
@@ -162,12 +162,12 @@
  
   .navbar-links .navbar-contact {
     justify-content: center;
-    margin-top: 5px;
-    padding: 14px;
+    margin-top: 0.3125rem;
+    padding: 0.875rem;
   }
  
   .navbar-open .navbar-toggle span:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
+    transform: translateY(0.375rem) rotate(45deg);
   }
  
   .navbar-open .navbar-toggle span:nth-child(2) {
@@ -175,18 +175,18 @@
   }
  
   .navbar-open .navbar-toggle span:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
+    transform: translateY(-0.375rem) rotate(-45deg);
   }
 }
  
 @media (max-width: 380px) {
   .navbar {
-    padding: 0 13px;
+    padding: 0 0.8125rem;
   }
  
   .navbar-logo img {
-    height: 38px;
-    max-width: 160px;
+    height: 2.375rem;
+    max-width: 10rem;
   }
 }
  
