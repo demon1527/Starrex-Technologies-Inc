@@ -187,3 +187,10 @@
     padding-bottom: 3.75rem;
   }
 }
+
+/* Same hero start on every page: top-aligned under the navbar (desktop/tablet) */
+@media (min-width: 601px) {
+  .hero {
+    align-items: flex-start;
+  }
+}

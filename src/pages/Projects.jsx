@@ -52,14 +52,15 @@ function Projects() {
           A collection of digital experiences, creative solutions and
           technology-driven projects built by Starrex Technologies.
         </p>
+
+        <div className="projects-buttons">
+          <Link to="/contact" className="projects-primary">
+            Wanna build your own website?
+            <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
       </div>
 
-      <div className="projects-buttons">
-  <Link to="/contact" className="projects-primary">
-    Wanna build your own website?
-    <span aria-hidden="true">↗</span>
-  </Link>
-</div>
 
         
 

@@ -509,3 +509,20 @@
 .software-cta {
   text-shadow: var(--text-halo);
 }
+
+/* Same hero start on every page: top-aligned under the navbar (desktop/tablet) */
+@media (min-width: 601px) {
+  .software-hero {
+    align-items: flex-start;
+  }
+}
+
+/* Phones: same hero start as the other pages */
+@media (max-width: 600px) {
+  .software-hero {
+    min-height: auto;
+    align-items: flex-start;
+    padding-top: 6.875rem;
+    padding-bottom: 3.75rem;
+  }
+}

@@ -478,3 +478,13 @@ background: transparent;
 .contact-form {
   text-shadow: none;
 }
+
+/* Same hero start on every page: top-aligned under the navbar (desktop/tablet) */
+@media (min-width: 601px) {
+  .contact-hero {
+    justify-content: flex-start;
+    padding-top: 9.375rem;
+    padding-bottom: 1.5rem;
+    min-height: auto;
+  }
+}

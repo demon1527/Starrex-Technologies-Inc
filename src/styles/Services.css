@@ -709,3 +709,10 @@
 .services-cta {
   text-shadow: var(--text-halo);
 }
+
+/* Same hero start on every page: top-aligned under the navbar (desktop/tablet) */
+@media (min-width: 601px) {
+  .services-hero {
+    align-items: flex-start;
+  }
+}

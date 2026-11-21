@@ -1,8 +1,8 @@
 .footer {
   width: 100%;
   /* extra bottom space keeps the floating sound button off the © line */
-  padding: 1.25rem 5% 4.75rem;
-  margin-top: 1.5625rem;
+  padding: 0.75rem 5% 3.5rem;
+  margin-top: 0.75rem;
 }
 
 .footer-container {
@@ -16,15 +16,15 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 2rem;
-  padding: 2.1875rem 0;
+  padding: 1.5rem 0;
 }
 
 .footer-brand {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.9375rem;
-  padding-top: 0.625rem;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
 }
 
 .footer-logo {
@@ -33,7 +33,7 @@
 }
 
 .footer-logo img {
-  height: 2.75rem;
+  height: 2.5rem;
   width: auto;
   display: block;
 }
@@ -49,8 +49,8 @@
 }
 
 .footer-socials a {
-  width: 2.375rem;
-  height: 2.375rem;
+  width: 2.25rem;
+  height: 2.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,7 +89,7 @@
 
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
-  padding: 1.375rem 0;
+  padding: 1rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -102,16 +102,16 @@
 }
 
 @media (min-width: 601px) {
-  /* room for the sound and scroll-to-top buttons on desktop */
+  /* a little room so the floating buttons never cover the footer text */
   .footer {
-    padding-bottom: 7.25rem;
+    padding-bottom: 3.75rem;
   }
 }
 
 @media (max-width: 600px) {
   .footer-top {
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 
   .footer-brand {
@@ -135,4 +135,12 @@
 .footer-links a,
 .footer-bottom p {
   text-shadow: var(--text-halo);
+}
+
+/* Tablets / small laptops: keep footer text clear of the floating buttons */
+@media (min-width: 601px) and (max-width: 1200px) {
+  .footer-bottom {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }

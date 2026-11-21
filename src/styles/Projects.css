@@ -326,3 +326,18 @@
 .projects-section-heading {
   text-shadow: var(--text-halo);
 }
+
+/* Same hero start on every page: top-aligned under the navbar (desktop/tablet) */
+@media (min-width: 601px) {
+  .projects-hero {
+    justify-content: flex-start;
+    padding-top: 9.375rem;
+    padding-bottom: 3rem;
+    min-height: auto;
+  }
+}
+
+/* The button now sits inside the hero, right under the paragraph */
+.projects-buttons {
+  margin-top: 2.1875rem;
+}
