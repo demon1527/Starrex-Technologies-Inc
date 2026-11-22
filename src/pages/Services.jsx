@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../styles/Services.css";
 
 const services = [
@@ -87,8 +87,6 @@ const reasons = [
 ];
 
 function Services() {
-  const navigate = useNavigate();
-
   return (
     <main className="services-page">
       <section className="services-hero">
@@ -135,19 +133,7 @@ function Services() {
 
         <div className="services-offering-list">
           {services.map((service) => (
-            <article
-              className={`services-offering-card ${service.number === "01" ? "services-offering-card-clickable" : ""}`}
-              key={service.number}
-              onClick={service.number === "01" ? () => navigate("/projects") : undefined}
-              onKeyDown={service.number === "01" ? (event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  navigate("/projects");
-                }
-              } : undefined}
-              role={service.number === "01" ? "link" : undefined}
-              tabIndex={service.number === "01" ? 0 : undefined}
-            >
+            <article className="services-offering-card" key={service.number}>
               <div className="services-offering-top">
                 <span className="services-offering-icon" aria-hidden="true">
                   {service.icon}

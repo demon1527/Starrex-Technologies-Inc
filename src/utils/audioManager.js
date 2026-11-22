@@ -1,5 +1,4 @@
 const MUSIC_PATH = "/audio/liminal-ambient-18-percent.mp3";
-const PLANET_WHOOSH_PATH = "/audio/planet-arrival-whoosh.mp3";
 const PAGE_SWISH_PATH = "/audio/page-transition-swish.mp3";
 const FADE_DURATION = 4000;
 
@@ -88,10 +87,6 @@ function playEffect(path, volume) {
   });
 }
 
-function playPlanetArrival() {
-  playEffect(PLANET_WHOOSH_PATH, 0.62);
-}
-
 function playPageTransition() {
   playEffect(PAGE_SWISH_PATH, 0.38);
 }
@@ -117,7 +112,6 @@ const audioManager = {
   enable,
   disable,
   stopAll,
-  playPlanetArrival,
   playPageTransition,
   isEnabled: () => enabled,
 };

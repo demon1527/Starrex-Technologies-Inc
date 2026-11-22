@@ -163,7 +163,7 @@ function Contact() {
 
             {/* BUDGET */}
             <div className="form-group">
-              <label htmlFor="budget-select">Estimated Budget</label>
+              <label htmlFor="budget-select">Estimated Budget (USD)</label>
 
               <select
                 id="budget-select"
@@ -270,7 +270,7 @@ function Contact() {
           </button>
 
           {status === "success" && (
-            <div className="form-success">
+            <div className="form-success" role="status" aria-live="polite">
               <div className="success-icon">✓</div>
               <div>
                 <h3>Inquiry Submitted!</h3>
@@ -282,7 +282,7 @@ function Contact() {
           )}
 
           {status === "error" && (
-            <p className="form-error">
+            <p className="form-error" role="alert" aria-live="assertive">
               Something went wrong. Please try again.
             </p>
           )}

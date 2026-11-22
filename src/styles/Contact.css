@@ -488,3 +488,16 @@ background: transparent;
     min-height: auto;
   }
 }
+
+
+/* Form submission error feedback */
+.form-error {
+  margin-top: 1.125rem;
+  padding: 1rem 1.125rem;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  border-radius: 0.75rem;
+  background: rgba(127, 29, 29, 0.18);
+  color: #fecaca;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}

@@ -4,7 +4,7 @@ import { contactInfo } from "../utils/contactInfo";
 
 function Privacy() {
   return (
-    <LegalPage title="Privacy Policy" updated="November 18, 2026">
+    <LegalPage title="Privacy Policy" updated="November 22, 2026">
       <p>
         This Privacy Policy explains what information Starrex Technologies
         (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects through this website, how
@@ -46,7 +46,8 @@ function Privacy() {
         <li>Netlify, which hosts the website.</li>
         <li>EmailJS and Google (Gmail), which deliver contact form messages to us.</li>
         <li>Google Fonts, which provides the site&rsquo;s typeface.</li>
-        <li>Cloudflare (cdnjs) and GitHub, which serve code and images used for the 3D backgrounds.</li>
+        <li>Cloudflare&rsquo;s cdnjs service, which delivers the Three.js library used by the 3D background.</li>
+        <li>GitHub&rsquo;s raw content service, which delivers Earth texture images loaded by the 3D background. The site&rsquo;s own <code>saturn.js</code> background script is hosted by Netlify with the rest of the website.</li>
       </ul>
       <p>
         These providers may process data on servers outside your country and
