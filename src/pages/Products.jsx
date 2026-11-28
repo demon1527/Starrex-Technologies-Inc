@@ -22,8 +22,8 @@ const products = [
     ],
     image: "/products/ai-starter-pack-art.webp",
     imageAlt: "Illustration of a chat window with an AI prompt and a workflow card",
-    price: "", // TODO: e.g. "$4.99"
-    whopUrl: "", // TODO: paste your Whop checkout link
+    price: "1.99/per month", // TODO: e.g. "$4.99"
+    whopUrl: "https://whop.com/batman-9ca8/happy-87/", // TODO: paste your Whop checkout link
   },
 ];
 
