@@ -10,6 +10,7 @@ import RouteSeo from "./components/RouteSeo";
 
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
+import Products from "./pages/Products";
 import Services from "./pages/Services";
 import SoftwareDevelopment from "./pages/SoftwareDevelopment";
 import About from "./pages/About";
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/products" element={<Products />} />
         <Route path="/services" element={<Services />} />
         <Route path="/software-development" element={<SoftwareDevelopment />} />
         <Route path="/about" element={<About />} />

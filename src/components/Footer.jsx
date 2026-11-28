@@ -53,6 +53,7 @@ function Footer() {
           <nav className="footer-links" aria-label="Footer">
             <Link to="/about">About</Link>
             <Link to="/projects">Projects</Link>
+            <Link to="/products">Products</Link>
             <Link to="/contact">Contact</Link>
             <Link to="/privacy">Privacy</Link>
             <Link to="/terms">Terms</Link>

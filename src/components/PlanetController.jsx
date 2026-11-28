@@ -8,6 +8,7 @@ function getScene(pathname) {
   if (pathname.startsWith("/services")) return "mars";
   if (pathname.startsWith("/software-development")) return "moon";
   if (pathname.startsWith("/about")) return "none";
+  if (pathname.startsWith("/products")) return "none";
   if (pathname.startsWith("/privacy") || pathname.startsWith("/terms")) return "none";
   if (pathname.startsWith("/contact")) return "galaxy";
   return "earth";

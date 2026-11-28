@@ -14,6 +14,11 @@ export const pageMeta = {
     description:
       "Explore websites and software projects built by Starrex Technologies, from first idea to launch.",
   },
+  "/products": {
+    title: "Products | Starrex Technologies",
+    description:
+      "Practical digital products from Starrex Technologies, including AI prompt and automation guides. Check out securely on Whop.",
+  },
   "/services": {
     title: "Services | Starrex Technologies",
     description:

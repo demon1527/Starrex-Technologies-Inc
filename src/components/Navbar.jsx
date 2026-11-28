@@ -7,6 +7,7 @@ const navigation = [
   { label: "Projects", to: "/projects" },
   { label: "Services", to: "/services" },
   { label: "Software", to: "/software-development" },
+  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact", contact: true },
 ];
